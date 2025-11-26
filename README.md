@@ -2,6 +2,16 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Backend configuration
+
+Create a `.env.local` file (or update your existing one) with the backend API base URL so requests are sent to the pcn-backend instance:
+
+```
+REACT_APP_API_BASE_URL=http://localhost:8000/api
+```
+
+Adjust the URL to match where your backend is running.
+
 ## Available Scripts
 
 In the project directory, you can run:
