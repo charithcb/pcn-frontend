@@ -1,3 +1,4 @@
+import { ReactElement } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import Home from "../pages/public/Home/Home";
@@ -16,7 +17,7 @@ import { useAuth } from "../hooks/useAuth";
 import Spinner from "../components/common/Spinner";
 import AdminRoutes from "./AdminRoutes";
 
-function RequireAuth({ children }: { children: JSX.Element }) {
+function RequireAuth({ children }: { children: ReactElement }) {
     const { user, loading } = useAuth();
 
     if (loading) {
