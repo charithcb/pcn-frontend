@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "../utils/constants";
+import { API_BASE_URL } from "../config/api";
 import { ApiError } from "../utils/helpers";
 
 export async function uploadDocument(file: File, token?: string) {
