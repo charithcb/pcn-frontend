@@ -1,65 +1,70 @@
+import { FormEvent, useState } from "react";
 import CustomerLayout from "../../../layouts/CustomerLayout";
+import Input from "../../../components/common/Input";
+import TextArea from "../../../components/common/TextArea";
+import Button from "../../../components/common/Button";
+import Toast from "../../../components/common/Toast";
+import { useAuth } from "../../../hooks/useAuth";
+import { createPreorder } from "../../../services/preorderService";
+import Spinner from "../../../components/common/Spinner";
 
 export default function PreOrder() {
+    const { token } = useAuth();
+    const [make, setMake] = useState("");
+    const [model, setModel] = useState("");
+    const [budget, setBudget] = useState("");
+    const [notes, setNotes] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState<string | null>(null);
+
+    const handleSubmit = async (event: FormEvent) => {
+        event.preventDefault();
+        setLoading(true);
+        try {
+            await createPreorder(
+                {
+                    vehiclePreferences: { make, model },
+                    budget: budget ? Number(budget) : undefined,
+                    notes,
+                },
+                token || undefined
+            );
+            setMessage("Your pre-order request was sent.");
+            setMake("");
+            setModel("");
+            setBudget("");
+            setNotes("");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <CustomerLayout>
-            {/* TOP BAR */}
             <div className="sticky top-0 z-10 bg-dark-900/80 backdrop-blur px-4 py-3 border-b border-dark-600">
-                <h1 className="text-[20px] font-bold text-textc-primary">
-                    Pre-order Vehicle
-                </h1>
+                <h1 className="text-[20px] font-bold text-textc-primary">Pre-order a vehicle</h1>
             </div>
 
-            {/* CONTENT */}
             <div className="px-4 py-4 flex flex-col gap-4">
-                <p className="text-[14px] text-textc-secondary">
-                    Tell us what you’re looking for. We’ll import a vehicle that matches your request.
-                </p>
-
-                <form className="flex flex-col gap-3 max-w-xl">
-                    <input
-                        className="w-full bg-dark-800 border border-dark-600 text-textc-primary
-                       placeholder-textc-muted rounded-xl px-4 py-2 text-[14px]
-                       focus:border-gold outline-none"
-                        placeholder="Make (e.g. Toyota)"
-                    />
-
-                    <input
-                        className="w-full bg-dark-800 border border-dark-600 text-textc-primary
-                       placeholder-textc-muted rounded-xl px-4 py-2 text-[14px]
-                       focus:border-gold outline-none"
-                        placeholder="Model (e.g. Aqua)"
-                    />
-
-                    <input
-                        className="w-full bg-dark-800 border border-dark-600 text-textc-primary
-                       placeholder-textc-muted rounded-xl px-4 py-2 text-[14px]
-                       focus:border-gold outline-none"
-                        placeholder="Year range (e.g. 2017–2020)"
-                    />
-
-                    <input
-                        className="w-full bg-dark-800 border border-dark-600 text-textc-primary
-                       placeholder-textc-muted rounded-xl px-4 py-2 text-[14px]
-                       focus:border-gold outline-none"
+                <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
+                    <Input placeholder="Preferred make" required value={make} onChange={(e) => setMake(e.target.value)} />
+                    <Input placeholder="Preferred model" required value={model} onChange={(e) => setModel(e.target.value)} />
+                    <Input
                         placeholder="Budget (LKR)"
+                        type="number"
+                        value={budget}
+                        onChange={(e) => setBudget(e.target.value)}
                     />
-
-                    <textarea
-                        className="w-full bg-dark-800 border border-dark-600 text-textc-primary
-                       placeholder-textc-muted rounded-xl px-4 py-2 text-[14px] min-h-[100px]
-                       focus:border-gold outline-none"
-                        placeholder="Additional notes (color, options, mileage, etc.)"
+                    <TextArea
+                        placeholder="Any additional notes or requirements"
+                        rows={4}
+                        value={notes}
+                        onChange={(e) => setNotes(e.target.value)}
                     />
-
-                    <button
-                        type="submit"
-                        className="mt-2 w-full sm:w-auto bg-gold text-black font-semibold px-6 py-2
-                       rounded-full hover:bg-gold-dark transition"
-                    >
-                        Submit pre-order request
-                    </button>
+                    <Button type="submit">{loading ? <Spinner /> : "Submit request"}</Button>
                 </form>
+
+                {message ? <Toast message={message} /> : null}
             </div>
         </CustomerLayout>
     );

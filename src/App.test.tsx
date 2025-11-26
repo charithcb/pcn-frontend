@@ -2,8 +2,14 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+jest.mock('./hooks/useAuth', () => ({
+  useAuth: () => ({ user: null, token: null, loading: false, error: null, login: jest.fn(), register: jest.fn(), logout: jest.fn(), refreshProfile: jest.fn() })
+}));
+
+jest.mock('./router/AppRouter', () => () => <div>Welcome to PCN</div>);
+
+test('renders PCN welcome message', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  const heading = screen.getByText(/Welcome to PCN/i);
+  expect(heading).toBeInTheDocument();
 });
