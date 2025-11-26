@@ -1,4 +1,6 @@
-export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:8000/api";
+import { API_BASE_URL } from "../config/api";
+
+export { API_BASE_URL };
 
 export const STORAGE_KEYS = {
     TOKEN: "pcn_token",
