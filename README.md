@@ -10,7 +10,7 @@ Create a `.env.local` file (or update your existing one) with the backend API ba
 REACT_APP_API_BASE_URL=http://localhost:5000/api
 ```
 
-Adjust the URL to match where your backend is running.
+This defaults to `http://localhost:5000/api` (where the backend typically runs). If your backend is still running on `http://localhost:8000/api` from an older setup, set `REACT_APP_API_BASE_URL` accordingly so both branches stay compatible.
 
 ## Available Scripts
 
