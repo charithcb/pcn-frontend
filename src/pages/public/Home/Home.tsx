@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import Button from "../../../components/common/Button";
+import Divider from "../../../components/common/Divider";
 
 export default function Home() {
     return (
@@ -14,28 +16,23 @@ export default function Home() {
                 </p>
 
                 <div className="flex flex-col gap-4 max-w-[300px] mx-auto">
-
                     <Link to="/login">
-                        <button
-                            className="w-full bg-gold text-black font-semibold py-3 rounded-full
-                         hover:bg-gold-dark transition"
-                        >
-                            Sign in
-                        </button>
+                        <Button>Sign in</Button>
                     </Link>
 
                     <Link to="/register">
-                        <button
-                            className="w-full border border-gold text-gold font-semibold py-3 rounded-full
-                         hover:bg-gold/10 transition"
-                        >
-                            Create account
-                        </button>
+                        <Button variant="secondary">Create account</Button>
                     </Link>
-
                 </div>
+
+                <Divider />
+
+                <p className="text-[14px] text-textc-muted">
+                    Start by signing in or creating your account to continue.
+                </p>
 
             </div>
         </div>
     );
 }
+

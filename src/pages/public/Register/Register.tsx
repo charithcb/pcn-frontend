@@ -1,3 +1,8 @@
+import { Link } from "react-router-dom";
+import Button from "../../../components/common/Button";
+import Input from "../../../components/common/Input";
+import Divider from "../../../components/common/Divider";
+
 export default function Register() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-dark-900 px-4">
@@ -8,49 +13,24 @@ export default function Register() {
                 </h1>
 
                 <form className="flex flex-col gap-4">
+                    <Input placeholder="Full name" />
+                    <Input type="email" placeholder="Email" />
+                    <Input type="password" placeholder="Password" />
 
-                    <input
-                        type="text"
-                        placeholder="Full name"
-                        className="w-full p-3 rounded-xl bg-dark-700 border border-dark-600
-                       text-textc-primary placeholder-textc-muted
-                       focus:border-gold outline-none"
-                    />
-
-                    <input
-                        type="email"
-                        placeholder="Email"
-                        className="w-full p-3 rounded-xl bg-dark-700 border border-dark-600
-                       text-textc-primary placeholder-textc-muted
-                       focus:border-gold outline-none"
-                    />
-
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        className="w-full p-3 rounded-xl bg-dark-700 border border-dark-600
-                       text-textc-primary placeholder-textc-muted
-                       focus:border-gold outline-none"
-                    />
-
-                    <button
-                        type="submit"
-                        className="w-full bg-gold text-black font-semibold py-2 rounded-full
-                       hover:bg-gold-dark transition"
-                    >
-                        Sign up
-                    </button>
-
+                    <Button type="submit">Sign up</Button>
                 </form>
 
-                <div className="mt-6 text-[14px] text-textc-secondary">
-                    Already have an account?{" "}
-                    <span className="text-gold cursor-pointer hover:underline">
-            Sign in
-          </span>
-                </div>
+                <Divider />
 
+                <div className="mt-2 text-[14px] text-textc-secondary">
+                    Already have an account?{" "}
+                    <Link to="/login" className="text-gold hover:underline">
+                        Sign in
+                    </Link>
+                </div>
             </div>
         </div>
     );
 }
+
+
