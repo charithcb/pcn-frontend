@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Backend configuration
 
-Create a `.env.local` file (or update your existing one) with the backend API base URL so requests are sent to the pcn-backend instance:
+Create a `.env.local` file (or update your existing one) with the backend API base URL so requests are sent to the pcn-backend instance. You can copy `.env.local.example` as a starting point:
 
 ```
 REACT_APP_API_BASE_URL=http://localhost:8000/api
