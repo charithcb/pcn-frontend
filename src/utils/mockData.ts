@@ -4,6 +4,7 @@ import { Order } from "../types/Order";
 import { Tracking } from "../types/Tracking";
 import { User } from "../types/User";
 import { Vehicle } from "../types/Vehicle";
+import { ApiError } from "./helpers";
 
 const mockUser: User = {
     id: "mock-user-1",
@@ -189,7 +190,9 @@ export async function handleMockRequest<T>(endpoint: string, options: RequestIni
         const id = path.replace("/vehicles/", "");
         const vehicle = mockVehicles.find((item) => item.id === id);
         if (!vehicle) {
-            throw { message: "Vehicle not found", status: 404 };
+            const error = new Error("Vehicle not found");
+            (error as ApiError).status = 404;
+            throw error;
         }
         return vehicle as T;
     }
@@ -199,7 +202,9 @@ export async function handleMockRequest<T>(endpoint: string, options: RequestIni
         const code = path.replace("/tracking/", "");
         const record = mockTrackingRecords[code];
         if (!record) {
-            throw { message: "Tracking record not found", status: 404 };
+            const error = new Error("Tracking record not found");
+            (error as ApiError).status = 404;
+            throw error;
         }
         return record as T;
     }

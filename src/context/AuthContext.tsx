@@ -36,18 +36,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
     }, []);
 
-    useEffect(() => {
-        if (token && !user) {
-            refreshProfile();
-        }
-    }, [token]);
-
     const persistAuth = (authToken: string, authUser: User) => {
         localStorage.setItem(STORAGE_KEYS.TOKEN, authToken);
         localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(authUser));
         setToken(authToken);
         setUser(authUser);
     };
+
+    const logout = useCallback(() => {
+        localStorage.removeItem(STORAGE_KEYS.TOKEN);
+        localStorage.removeItem(STORAGE_KEYS.USER);
+        setUser(null);
+        setToken(null);
+    }, []);
+
+    const refreshProfile = useCallback(async () => {
+        if (!token) return;
+        setLoading(true);
+        try {
+            const profile = await fetchProfile(token);
+            localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(profile));
+            setUser(profile);
+        } catch (err) {
+            logout();
+        } finally {
+            setLoading(false);
+        }
+    }, [logout, token]);
+
+    useEffect(() => {
+        if (token && !user) {
+            refreshProfile();
+        }
+    }, [refreshProfile, token, user]);
 
     const login = useCallback(async (email: string, password: string) => {
         setLoading(true);
@@ -78,27 +99,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setLoading(false);
         }
     }, []);
-
-    const logout = useCallback(() => {
-        localStorage.removeItem(STORAGE_KEYS.TOKEN);
-        localStorage.removeItem(STORAGE_KEYS.USER);
-        setUser(null);
-        setToken(null);
-    }, []);
-
-    const refreshProfile = useCallback(async () => {
-        if (!token) return;
-        setLoading(true);
-        try {
-            const profile = await fetchProfile(token);
-            localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(profile));
-            setUser(profile);
-        } catch (err) {
-            logout();
-        } finally {
-            setLoading(false);
-        }
-    }, [logout, token]);
 
     const value = useMemo(
         () => ({ user, token, loading, error, login, register, logout, refreshProfile }),

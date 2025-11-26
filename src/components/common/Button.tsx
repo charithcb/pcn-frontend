@@ -1,20 +1,26 @@
+import { ButtonHTMLAttributes, ReactNode } from "react";
+
 type ButtonProps = {
-    children: React.ReactNode;
+    children: ReactNode;
     variant?: "primary" | "secondary";
+    size?: "sm" | "md";
     className?: string;
-    onClick?: () => void;
-    type?: "button" | "submit";
 };
 
 export default function Button({
                                    children,
                                    variant = "primary",
+                                   size = "md",
                                    className = "",
-                                   onClick,
                                    type = "button",
-                               }: ButtonProps) {
-    const base =
-        "w-full font-semibold py-2 rounded-full transition text-[14px]";
+                                   ...rest
+                               }: ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>) {
+    const sizeClasses =
+        size === "sm"
+            ? "px-4 py-1.5 text-[13px] w-auto"
+            : "w-full py-2 text-[14px]";
+
+    const base = `font-semibold rounded-full transition ${sizeClasses}`;
 
     const styles =
         variant === "primary"
@@ -22,7 +28,7 @@ export default function Button({
             : "border border-gold text-gold hover:bg-gold/10";
 
     return (
-        <button type={type} onClick={onClick} className={`${base} ${styles} ${className}`}>
+        <button type={type} {...rest} className={`${base} ${styles} ${className}`}>
             {children}
         </button>
     );
