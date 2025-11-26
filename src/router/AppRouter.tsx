@@ -14,6 +14,7 @@ import Appointments from "../pages/customer/Appointments/Appointments";
 import Profile from "../pages/customer/Profile/Profile";
 import { useAuth } from "../hooks/useAuth";
 import Spinner from "../components/common/Spinner";
+import AdminRoutes from "./AdminRoutes";
 
 function RequireAuth({ children }: { children: JSX.Element }) {
     const { user, loading } = useAuth();
@@ -41,6 +42,16 @@ export default function AppRouter() {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+
+                {/* Admin */}
+                <Route
+                    path="/admin/*"
+                    element={
+                        <RequireAuth>
+                            <AdminRoutes />
+                        </RequireAuth>
+                    }
+                />
 
                 {/* Customer */}
                 <Route

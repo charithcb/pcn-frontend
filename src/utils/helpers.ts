@@ -5,19 +5,27 @@ export type ApiError = {
     status?: number;
 };
 
+function buildHeaders(options: RequestInit, token?: string) {
+    const headers = new Headers(options.headers);
+
+    const isFormData = options.body instanceof FormData;
+    if (!headers.has("Content-Type") && !isFormData) {
+        headers.set("Content-Type", "application/json");
+    }
+
+    if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+    }
+
+    return headers;
+}
+
 export async function apiRequest<T>(
     endpoint: string,
     options: RequestInit = {},
     token?: string
 ): Promise<T> {
-    const headers: HeadersInit = {
-        "Content-Type": "application/json",
-        ...(options.headers || {}),
-    };
-
-    if (token) {
-        headers.Authorization = `Bearer ${token}`;
-    }
+    const headers = buildHeaders(options, token);
 
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         ...options,
